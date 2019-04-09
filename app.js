@@ -1,5 +1,25 @@
 // SD Pick Up Games
 
+// Initialize Firebase
+
+//Create Pick Up Game button
+
+//On click, pop up modal
+
+    //Within modal, form is available to fill out
+
+    //Within form, enter zip has a 'search' button within to request
+
+        //When Search button clicked, Google Maps API request and Weather based off      Zip shows results
+
+
+
+
+
+
+
+
+
 //Sign in to have user data and 
 
 // Search for Pick up games that have been posted around you
