@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Project</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <style>
         .jumbotron {
@@ -13,20 +15,24 @@
             background-size: 100%;
             height: 400px;
         }
+
         .navbar-right li a {
             text-align: right;
         }
+
         .card-group {
             display: flex;
         }
-        
     </style>
 </head>
+
 <body>
     <div id="app" class="container">
-        <nav class="navbar navbar-custom navbar-expand-lg navbar-dark" style="background-color: #002b5b;"> <!--<nav class="navbar navbar-custom navbar-expand-lg navbar-light bg-light">-->
+        <nav class="navbar navbar-custom navbar-expand-lg navbar-dark" style="background-color: #002b5b;">
+            <!--<nav class="navbar navbar-custom navbar-expand-lg navbar-light bg-light">-->
             <a class="navbar-brand" href="#">SD Pickup Games</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbarNavDropdown" class="navbar-collapse collapse">
@@ -35,7 +41,8 @@
                         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Sports
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -45,7 +52,7 @@
                             <a class="dropdown-item" href="https://www.nba.com/#/">Baseball</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="https://www.nba.com/#/">Something else here</a>
-                        </div>      
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Locations</a>
@@ -53,7 +60,8 @@
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Dropdown
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -71,7 +79,7 @@
             </div>
         </nav>
     </div>
-    
+
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1 class="display-4">SD Pickup Games</h1>
@@ -79,10 +87,57 @@
             <hr class="my-4">
             <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
             <a class="btn btn-danger btn-lg" href="#" role="button">Find Game</a>
-            <a class="btn btn-danger btn-lg" href="#" role="button">Create Game</a>
+            <a class="btn btn-danger btn-lg" href="#" id="create-game" role="button">Create Game</a>
         </div>
     </div>
+
+
     <div class="container">
+
+        <!--Form to be hidden initially until clicked on-->
+        <div id="form-spot">
+            <form>
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Email address</label>
+                    <input type="email" class="form-control" id="exampleFormControlInput1"
+                        placeholder="name@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Example select</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect2">Example multiple select</label>
+                    <select multiple class="form-control" id="exampleFormControlSelect2">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Example textarea</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+            </form>
+        </div>
+        <!--Script to immediately hide form-->
+        <script>
+                //Hide Form from create-game immediately
+                function hideForm(){
+                    document.getElementById('form-spot').style.display = 'none';
+                }
+                
+                hideForm();
+            </script>
+
         <div class="card">
             <div class="card-header bg-secondary text-white">Current Games</div>
             <div class="card-group">
@@ -90,29 +145,32 @@
                     <div class="card-body">
                         <h5 class="card-title">Card title</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
                         <a href="#" class="card-link">Card link</a>
                         <a href="#" class="card-link">Another link</a>
                     </div>
-                </div> 
+                </div>
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">Card title</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
                         <a href="#" class="card-link">Card link</a>
                         <a href="#" class="card-link">Another link</a>
                     </div>
-                </div> 
+                </div>
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">Card title</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
                         <a href="#" class="card-link">Card link</a>
                         <a href="#" class="card-link">Another link</a>
                     </div>
-                </div>    
+                </div>
             </div>
         </div>
         <div class="card">
@@ -121,21 +179,23 @@
                 <table class="table">
                     <thead>
                         <tr>
-                        <th scope="col">Neighborhood</th>
-                        <th scope="col">Location</th>
-                        <th scope="col">Organizer</th>
-                        <th scope="col">Time</th>
+                            <th scope="col">Neighborhood</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Organizer</th>
+                            <th scope="col">Time</th>
                         </tr>
                     </thead>
                     <!--Train data will be appended to table-data id-->
                     <tbody id="table-data"></tbody>
                 </table>
-            </div>    
+            </div>
         </div>
     </div>
-  
 
 
-    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="./app.js"></script>
 </body>
+
 </html>

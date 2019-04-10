@@ -2,7 +2,37 @@
 
 // Initialize Firebase
 
-//Create Pick Up Game button
+//Create Pick Up Game button (could change based on )
+$('#create-game').on('click', function(){
+
+    document.getElementById('form-spot').style.display = 'block';
+
+    //Variables for the form
+    //var form = $('<form>')
+    //var nameInput = $('<div>')
+    //var sportInput;
+    //var zipInput;
+
+    //create a space on the page that will have the form for input
+    //$('#form-spot').append(form)
+
+    //Variables of the input values needed to create game
+    //var name;
+    //var sport;
+    //var zipCode;
+   
+
+    console.log('test?')
+
+})
+
+
+
+
+
+
+
+
 
 //On click, pop up modal
 
@@ -10,7 +40,10 @@
 
     //Within form, enter zip has a 'search' button within to request
 
-        //When Search button clicked, Google Maps API request and Weather based off      Zip shows results
+        //When Search button clicked, Google Maps API request 
+        
+        //and Weather based off Zip shows results
+
 
 
 
