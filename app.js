@@ -2,7 +2,20 @@
 
 // Initialize Firebase
 
-//Create Pick Up Game button (could change based on )
+
+
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyA7WKY0CFTVlAgQb9Gp72FdN9yDU2u4zKI",
+    authDomain: "groupproject-972ed.firebaseapp.com",
+    databaseURL: "https://groupproject-972ed.firebaseio.com",
+    projectId: "groupproject-972ed",
+    storageBucket: "groupproject-972ed.appspot.com",
+    messagingSenderId: "142851479998"
+  };
+  firebase.initializeApp(config);
+
+//Create Pick Up Game button (could change based on certain aspects)
 $('#create-game').on('click', function(){
 
     document.getElementById('form-spot').style.display = 'block';
@@ -22,7 +35,23 @@ $('#create-game').on('click', function(){
     //var zipCode;
    
 
-    console.log('test?')
+    console.log('test')
+
+})
+
+//Submit button for posting the created game
+$('#create-game-submit').on('click', function(){
+    var name = $('#create-name-input').val();
+    var sport = $('#create-sport-input').val();
+    var zipCode = $('#create-zip-input').val();
+    var description = $('#create-description-input').val();
+
+    console.log(name);
+    console.log(sport);
+    console.log(zipCode);
+    console.log(description);
+    
+
 
 })
 
@@ -33,6 +62,10 @@ $('#create-game').on('click', function(){
 
 
 
+
+
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 //On click, pop up modal
 

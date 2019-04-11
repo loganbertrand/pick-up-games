@@ -98,34 +98,26 @@
         <div id="form-spot">
             <form>
                 <div class="form-group">
-                    <label for="exampleFormControlInput1">Email address</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1"
-                        placeholder="name@example.com">
+                    <label for="create-name-input">Name</label>
+                    <input type="email" class="form-control" id="create-name-input"
+                        placeholder="John Smith">
                 </div>
                 <div class="form-group">
-                    <label for="exampleFormControlSelect1">Example select</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
+                        <label for="create-sport-input">Sport</label>
+                        <input type="email" class="form-control" id="create-sport-input"
+                            placeholder="John Smith">
                 </div>
                 <div class="form-group">
-                    <label for="exampleFormControlSelect2">Example multiple select</label>
-                    <select multiple class="form-control" id="exampleFormControlSelect2">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
+                    <label for="create-description-input">Description</label>
+                    <textarea class="form-control" id="create-description-input" rows="3"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Example textarea</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <label for="create-zip-input">Zip Code</label>
+                        <input type="email" class="form-control" id="create-zip-input"
+                            placeholder="John Smith">
+                        <button type="submit" class="btn btn-primary" id="zip-code-search" >Search</button>    
                 </div>
+                <button type="submit" class="btn btn-primary" id="create-game-submit" >Submit</button>
             </form>
         </div>
         <!--Script to immediately hide form-->
@@ -193,7 +185,7 @@
     </div>
 
 
-
+    <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="./app.js"></script>
 </body>
