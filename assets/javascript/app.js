@@ -52,7 +52,53 @@ database.ref().on("value", function(snapshot) {
       // Handle the errors
     }, function(errorObject) {
       console.log("Errors handled: " + errorObject.code);
-    }
+    })
+
+
+//==============================Weather API function=============
+
+//Weather API Key : 4acb868eee5f62dc0b837676700ba625
+
+    var APIKey = "4acb868eee5f62dc0b837676700ba625";
+
+    var queryURL = "https://samples.openweathermap.org/data/2.5/weather?zip=92102,us&appid=b6907d289e10d714a6e88b30761fae22" + APIKey;
+
+    // Here we run our AJAX call to the OpenWeatherMap API
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    })
+      // We store all of the retrieved data inside of an object called "response"
+      .then(function(response) {
+
+        // Log the queryURL
+        console.log(queryURL);
+
+        // Log the resulting object
+        console.log(response);
+
+        // Transfer content to HTML
+        $(".city").html("<h1>" + response.name + " Weather Details</h1>");
+        $(".wind").text("Wind Speed: " + response.wind.speed);
+        $(".humidity").text("Humidity: " + response.main.humidity);
+        $(".temp").text("Temperature (F) " + response.main.temp);
+
+        // Log the data in the console as well
+        console.log("Wind Speed: " + response.wind.speed);
+        console.log("Humidity: " + response.main.humidity);
+        console.log("Temperature (F): " + response.main.temp);
+      })
+
+
+
+
+
+
+
+
+
+
+
 
 //Create Pick Up Game button-logan
 
@@ -89,5 +135,4 @@ database.ref().on("value", function(snapshot) {
     //Choose the park that you are going to, from a list of parks nearby
 
     //google maps usage
-
-    
+  
