@@ -94,6 +94,44 @@
             <a class="btn btn-danger btn-lg" href="#" role="button">Create Game</a>
         </div>
     </div>
+
+
+        <!--Form to be hidden initially until clicked on-->
+        <div id="form-spot">
+            <form>
+                <div class="form-group">
+                    <label for="create-name-input">Name</label>
+                    <input type="email" class="form-control" id="create-name-input"
+                        placeholder="John Smith">
+                </div>
+                <div class="form-group">
+                        <label for="create-sport-input">Sport</label>
+                        <input type="email" class="form-control" id="create-sport-input"
+                            placeholder="John Smith">
+                </div>
+                <div class="form-group">
+                    <label for="create-description-input">Description</label>
+                    <textarea class="form-control" id="create-description-input" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                        <label for="create-zip-input">Zip Code</label>
+                        <input type="email" class="form-control" id="create-zip-input"
+                            placeholder="John Smith">
+                        <button type="submit" class="btn btn-primary" id="zip-code-search" >Search</button>    
+                </div>
+                <button type="submit" class="btn btn-primary" id="create-game-submit" >Submit</button>
+            </form>
+        </div>
+        <!--Script to immediately hide form-->
+        <script>
+            //Hide Form from create-game immediately
+            function hideForm(){
+                document.getElementById('form-spot').style.display = 'none';
+            }
+            
+            hideForm();
+        </script>
+
     <div class="container">
         <div class="card">
             <div class="card-header bg-secondary text-white">Current Games</div>

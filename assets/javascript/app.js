@@ -21,7 +21,7 @@
   var organizer = "";
   var time = "";
 
-  $("add-user".on("click", function() {
+  $("add-user").on("click", function() {
   
     event.preventDefault();
 
@@ -35,7 +35,8 @@
         location: location,
         organizer: organizer,
         time: time,
-});
+      });
+    });
 
 database.ref().on("value", function(snapshot) {
     console.log(snapshot.val());
@@ -52,9 +53,49 @@ database.ref().on("value", function(snapshot) {
       // Handle the errors
     }, function(errorObject) {
       console.log("Errors handled: " + errorObject.code);
-    }
+    });
 
 //Create Pick Up Game button-logan
+
+$('#create-game').on('click', function(){
+
+  document.getElementById('form-spot').style.display = 'block';
+
+  //Variables for the form
+  //var form = $('<form>')
+  //var nameInput = $('<div>')
+  //var sportInput;
+  //var zipInput;
+
+  //create a space on the page that will have the form for input
+  //$('#form-spot').append(form)
+
+  //Variables of the input values needed to create game
+  //var name;
+  //var sport;
+  //var zipCode;
+ 
+
+  console.log('test')
+
+});
+
+//Submit button for posting the created game
+$('#create-game-submit').on('click', function(){
+  var name = $('#create-name-input').val();
+  var sport = $('#create-sport-input').val();
+  var zipCode = $('#create-zip-input').val();
+  var description = $('#create-description-input').val();
+
+  console.log(name);
+  console.log(sport);
+  console.log(zipCode);
+  console.log(description);
+  
+
+
+});
+
 
 //On click, pop up modal
 
@@ -69,6 +110,27 @@ database.ref().on("value", function(snapshot) {
 
 
 //google maps api key: AIzaSyApXuhqWNe1cN6kA4ojTP9aqVVsDcteGbU
+
+
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+//On click, pop up modal
+
+    //Within modal, form is available to fill out
+
+    //Within form, enter zip has a 'search' button within to request
+
+        //When Search button clicked, Google Maps API request 
+        
+        //and Weather based off Zip shows results
+
+
+
+
+
+
+
 
 
 
@@ -87,7 +149,3 @@ database.ref().on("value", function(snapshot) {
     //Short Description on what exactly you want to do, where in the park you might be
 
     //Choose the park that you are going to, from a list of parks nearby
-
-    //google maps usage
-
-    
