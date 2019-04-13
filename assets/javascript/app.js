@@ -38,26 +38,48 @@
   var searchRadius = '';
   var selectedSport = '';
 
+  //On click funtion to get parks in area
+  $('#submit').on('click', function(){
+       
+    event.preventDefault()
+
+    //document.getElementById('search-table').style.display = 'block';
+    //assign var to inputs from HTML
+    zCode = $('#create-zip-input').val().trim()
+    searchRadius = $('#radius-input').val().trim()
+    selectedSport = $('#create-sport-input').val().trim()
+    console.log(zCode)
+    console.log(searchRadius)
+    console.log(selectedSport)
+    //Define object properties in Firebase and push values to each
+    //dataRef.ref().push({
+    //    zipCode: zCode,
+    //})
+    //$('#train-name').val().empty()
+    getCoords()
+   
+   })
+
 //Search button for Zip Code and Weather
 $('#zip-code-search').on('click', function(){
  //-------------------GOOGLE MAPS-------------------
     
-        event.preventDefault()
+  event.preventDefault()
 
-        document.getElementById('search-table').style.display = 'block';
-        //assign var to inputs from HTML
-        zCode = $('#create-zip-input').val().trim()
-        searchRadius = $('#radius-input').val().trim()
-        selectedSport = $('#create-sport-input').val().trim()
-        console.log(zCode)
-        console.log(searchRadius)
-        console.log(selectedSport)
-        //Define object properties in Firebase and push values to each
-        //dataRef.ref().push({
-        //    zipCode: zCode,
-        //})
-        //$('#train-name').val().empty()
-        getCoords()
+  document.getElementById('search-table').style.display = 'block';
+  //assign var to inputs from HTML
+  zCode = $('#create-zip-input').val().trim()
+  searchRadius = $('#radius-input').val().trim()
+  selectedSport = $('#create-sport-input').val().trim()
+  console.log(zCode)
+  console.log(searchRadius)
+  console.log(selectedSport)
+  //Define object properties in Firebase and push values to each
+  //dataRef.ref().push({
+  //    zipCode: zCode,
+  //})
+  //$('#train-name').val().empty()
+  getCoords()
 
 
 
@@ -118,6 +140,12 @@ function clearCreateForm(){
    $('#create-zip-input').val('')
    $('#create-time-input').val('')
 }
+
+//Event listener for click row in create game modal
+$('.clickable-row').click(function() {
+  //window.location = $(this).data("href");
+  alert('hello')
+});
 
 database.ref().on("value", function(snapshot) {
 
@@ -203,7 +231,7 @@ var queryURL = "https://api.openweathermap.org/data/2.5/weather?zip=92102,us&app
     function callback(results, status) {
         console.log(results)
         for (var i = 0; i < results.length; i++) {
-            var tableRow  = $('<tr>')
+            var tableRow  = $('<tr>').addClass('clickable-row')
             parkName = results[i].name
             parkAddress = results[i].vicinity
             console.log(parkName)    
