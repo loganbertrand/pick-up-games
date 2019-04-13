@@ -20,7 +20,7 @@
 
     document.getElementById('form-spot').style.display = 'block';
   
-    console.log('test')
+    console.log('Create Game has been clicked')
   
   });
 
@@ -42,28 +42,36 @@
 $('#zip-code-search').on('click', function(){
  //-------------------GOOGLE MAPS-------------------
     
-        event.preventDefault()
+  event.preventDefault()
+  $('#create-search-results').html('');
+  $('#table-data').html('')
 
-        document.getElementById('search-table').style.display = 'block';
-        //assign var to inputs from HTML
-        zCode = $('#create-zip-input').val().trim()
-        searchRadius = $('#radius-input').val().trim()
-        selectedSport = $('#create-sport-input').val().trim()
-        console.log(zCode)
-        console.log(searchRadius)
-        console.log(selectedSport)
-        //Define object properties in Firebase and push values to each
-        //dataRef.ref().push({
-        //    zipCode: zCode,
-        //})
-        //$('#train-name').val().empty()
-        getCoords()
-
-
-
-//-------------------WEATHER API STUFF ON CLICK ---------------------------------
+  document.getElementById('search-table').style.display = 'block';
+  //assign var to inputs from HTML
+  zCode = $('#create-zip-input').val().trim()
+  searchRadius = $('#radius-input').val().trim()
+  selectedSport = $('#create-sport-input').val().trim()
+  console.log(zCode)
+  console.log(searchRadius)
+  console.log(selectedSport)
+  //Define object properties in Firebase and push values to each
+  //dataRef.ref().push({
+  //    zipCode: zCode,
+  //})
+  //$('#train-name').val().empty()
+  getCoords()
+//----------WEATHER API STUFF ON CLICK ---------
+  getWeather();
 
 })
+
+//On Click function for selecting the park you want for Game
+
+$('').on('click', function(){
+  document.getElementById('search-table').style.display = 'none';
+
+
+});
 
 //Submit button for posting the created game
 $('#create-game-submit').on('click', function(){
@@ -110,7 +118,11 @@ database.ref().on("child_added", function(childSnapshot) {
 
   document.getElementById('form-spot').style.display = 'none';
   clearCreateForm()
-});
+}, 
+// Handle the errors
+function(errorObject) {
+      console.log("Errors handled: " + errorObject.code);
+    });
 
 function clearCreateForm(){
    $('#create-name-input').val('')
@@ -119,43 +131,51 @@ function clearCreateForm(){
    $('#create-time-input').val('')
 }
 
-database.ref().on("value", function(snapshot) {
+//---------WEATHER API APP QUERY----------------------------------------
 
-//Variables for displaying on a new card needed
-
-}, 
-// Handle the errors
-function(errorObject) {
-      console.log("Errors handled: " + errorObject.code);
-    });
-
-
-//---------WEATHER API APP----------------------------------------
-var queryURL = "https://api.openweathermap.org/data/2.5/weather?zip=92102,us&appid=ff38d4fe0116519dd3020cd98753034a";
     // Here we run our AJAX call to the OpenWeatherMap API
  function getWeather(){
+
+  var zipCode = $('#create-zip-input').val().trim();
+  var queryURL = "https://api.openweathermap.org/data/2.5/weather?zip=" + zipCode + ",us&appid=ff38d4fe0116519dd3020cd98753034a";
+
     $.ajax({
       url: queryURL,
       method: "GET"
     }).then(function(response) {
       
-      
-      var tempC = response.main.temp
-      var tempF = (tempC-273) * 1.8 + 32
+      var city = response.name;
+      var weatherIcon = response.weather[0].icon;
+      var tempK = response.main.temp
+      var tempF = Math.floor((tempK-273) * 1.8 + 32) 
       
       
       console.log(response)
-      
-      console.log(response.name)
-      console.log(response.wind.speed)
-      console.log(response.wind.deg)
+      console.log(weatherIcon)
+      console.log(city)
       console.log(tempF)
-      console.log(tempC)
+      
+      // ------- POSTING WEATHER CARD ------
+
+        //http://openweathermap.org/img/w/[weatherIcon].png ----Link to image icon for weather
+
+      var newCard = $('<div class="card" style="width: 18rem;">')
+      var newCardBody = $('<div class="card-body">')  
+      var newCardTitle = $('<h5 class="card-title">'+  city + '</h5>')  
+      var newDeg =$('<h2 class="card-subtitle mb-2 text-muted">' + tempF + '</h2>') 
+      var newImg = $('<img src = "http://openweathermap.org/img/w/' + weatherIcon + '.png">')  
+
+      $('#create-search-results').append(newCard)
+      $(newCard).append(newCardBody)
+      $(newCardBody).append(newCardTitle)
+      $(newCardBody).append(newDeg)
+      $(newCardBody).append(newImg)
+
       
     });
  }
 
-//STUPID GOOGLE MAPS IS STUPID----------------------------------------------------------------------------
+//------------------STUPID GOOGLE MAPS IS STUPID----------------------------------------------------------------------------
 
 //Link for Google Places API
     
