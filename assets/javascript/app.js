@@ -1,151 +1,220 @@
 // SD Pick Up Games
 
-// Initialize Firebase<script>
-  // Initialize Fiase
-
   // Initialize Firebase
   var config = {
-    apiKey: "AIzaSyA7WKY0CFTVlAgQb9Gp72FdN9yDU2u4zKI",
-    authDomain: "groupproject-972ed.firebaseapp.com",
-    databaseURL: "https://groupproject-972ed.firebaseio.com",
-    projectId: "groupproject-972ed",
-    storageBucket: "groupproject-972ed.appspot.com",
-    messagingSenderId: "142851479998"
+    apiKey: "AIzaSyBE2dCicaIDw_mbKaD1DgdQn9YFvWMZfxA",
+    authDomain: "sd-pickup-games.firebaseapp.com",
+    databaseURL: "https://sd-pickup-games.firebaseio.com",
+    projectId: "sd-pickup-games",
+    storageBucket: "sd-pickup-games.appspot.com",
+    messagingSenderId: "847319270081"
   };
   firebase.initializeApp(config);
 
+  //Declaring Firebase database API
   var database = firebase.database();
 
-  var neighborhood = "";
-  var location = "";
-  var organizer = "";
-  var time = "";
+  //Create Pick Up Game button-logan
 
-  $("add-user").on("click", function() {
+  $('#create-game').on('click', function(){
+
+    document.getElementById('form-spot').style.display = 'block';
   
-    event.preventDefault();
+    console.log('test')
+  
+  });
 
-  neighborhood = $("#neighborhood-input").val().trim();
-      location = $("#location-input").val().trim();
-      organizer = $("#organizer-input").val().trim();
-      time = $("#time-input").val().trim();
+  //-------------GOOGLE MAPS VARIABLES-------------
+  //Declare variables
+  var lat
+  var lng 
+  var resp
+  var zCode
+  var map;
+  var service;
+  //var infowindow;
+  var parkName;
+  var parkAddress;
+  var searchRadius = '';
+  var selectedSport = '';
 
-      database.ref().set({
-        neighborhood: neighborhood,
-        location: location,
-        organizer: organizer,
-        time: time,
-      });
-    });
+//Search button for Zip Code and Weather
+$('#zip-code-search').on('click', function(){
+ //-------------------GOOGLE MAPS-------------------
+    
+        event.preventDefault()
 
-database.ref().on("value", function(snapshot) {
-    console.log(snapshot.val());
-    console.log(snapshot.val().neighborhood);
-    console.log(snapshot.val().location);
-    console.log(snapshot.val().organizer);
-    console.log(snapshot.val().time);
+        document.getElementById('search-table').style.display = 'block';
+        //assign var to inputs from HTML
+        zCode = $('#create-zip-input').val().trim()
+        searchRadius = $('#radius-input').val().trim()
+        selectedSport = $('#create-sport-input').val().trim()
+        console.log(zCode)
+        console.log(searchRadius)
+        console.log(selectedSport)
+        //Define object properties in Firebase and push values to each
+        //dataRef.ref().push({
+        //    zipCode: zCode,
+        //})
+        //$('#train-name').val().empty()
+        getCoords()
 
-    $("#neighborhood-display").text(snapshot.val().neighborhood);
-      $("#location-display").text(snapshot.val().location);
-      $("#organizer-display").text(snapshot.val().organizer);
-      $("#time-display").text(snapshot.val().time);
 
-      // Handle the errors
-    }, function(errorObject) {
-      console.log("Errors handled: " + errorObject.code);
-    });
 
-//Create Pick Up Game button-logan
+//-------------------WEATHER API STUFF ON CLICK ---------------------------------
 
-$('#create-game').on('click', function(){
-
-  document.getElementById('form-spot').style.display = 'block';
-
-  //Variables for the form
-  //var form = $('<form>')
-  //var nameInput = $('<div>')
-  //var sportInput;
-  //var zipInput;
-
-  //create a space on the page that will have the form for input
-  //$('#form-spot').append(form)
-
-  //Variables of the input values needed to create game
-  //var name;
-  //var sport;
-  //var zipCode;
- 
-
-  console.log('test')
-
-});
+})
 
 //Submit button for posting the created game
 $('#create-game-submit').on('click', function(){
-  var name = $('#create-name-input').val();
-  var sport = $('#create-sport-input').val();
-  var zipCode = $('#create-zip-input').val();
-  var description = $('#create-description-input').val();
+  var name = $('#create-name-input').val().trim();
+  var sport = $('#create-sport-input').val().trim();
+  var zipCode = $('#create-zip-input').val().trim();
+  var time = $('#create-time-input').val().trim();
 
   console.log(name);
   console.log(sport);
   console.log(zipCode);
-  console.log(description);
-  
+  console.log(time);
 
+
+  database.ref().push({
+    name: name,
+    sport: sport,
+    zipCode: zipCode,
+    time: time,
+  });
 
 });
+  
+//Set the database values to the webpage
+database.ref().on("child_added", function(childSnapshot) {
+
+  //define table row variable
+  var tableRow = $('<tr>')
+
+  //append that to the main table
+  $('#current-table').append(tableRow)
+
+  //define variables
+  var name = childSnapshot.val().name;
+  var sport = childSnapshot.val().sport;
+  var zipCode = childSnapshot.val().zipCode;
+  var time = childSnapshot.val().time;
+
+  
+  $(tableRow).append("<td>" + sport + "</td>")
+  $(tableRow).append('<td>' + zipCode + '</td>')
+  $(tableRow).append("<td>" + name + "</td>")
+  $(tableRow).append('<td>' + time + '</td>')
+
+  document.getElementById('form-spot').style.display = 'none';
+  clearCreateForm()
+});
+
+function clearCreateForm(){
+   $('#create-name-input').val('')
+   $('#create-sport-input').val('')
+   $('#create-zip-input').val('')
+   $('#create-time-input').val('')
+}
+
+database.ref().on("value", function(snapshot) {
+
+//Variables for displaying on a new card needed
+
+}, 
+// Handle the errors
+function(errorObject) {
+      console.log("Errors handled: " + errorObject.code);
+    });
 
 
-//On click, pop up modal
+//---------WEATHER API APP----------------------------------------
+var queryURL = "https://api.openweathermap.org/data/2.5/weather?zip=92102,us&appid=ff38d4fe0116519dd3020cd98753034a";
+    // Here we run our AJAX call to the OpenWeatherMap API
+ function getWeather(){
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+      
+      
+      var tempC = response.main.temp
+      var tempF = (tempC-273) * 1.8 + 32
+      
+      
+      console.log(response)
+      
+      console.log(response.name)
+      console.log(response.wind.speed)
+      console.log(response.wind.deg)
+      console.log(tempF)
+      console.log(tempC)
+      
+    });
+ }
 
-    //Within modal, form is available to fill out
+//STUPID GOOGLE MAPS IS STUPID----------------------------------------------------------------------------
 
-    //Within form, enter zip has a 'search' button within to request
+//Link for Google Places API
+    
+    //Takes the zipcode input and converts to latitue and longitiue coordinates.
+    function getCoords() {
+        var queryURL = "https://maps.googleapis.com/maps/api/geocode/json?address="+ zCode +"&key=AIzaSyApXuhqWNe1cN6kA4ojTP9aqVVsDcteGbU"
+        var result
+        console.log(queryURL)
+        $.ajax({
+            url: queryURL,
+            method: "GET",
+            async: false,
+            success: function(response){
+            resp = response;
+            result = resp.results   
+            }
+        })  
+        lat = result[0].geometry.location.lat
+        lng = result[0].geometry.location.lng
+        console.log(lat)
+        console.log(lng)  
+        //Calls initialize function
+        initialize()
+    }
+    //Function to create and submit request to Google Places API.
+    function initialize() {
+        var meterConv = ''
+        meterConv= searchRadius * 1609.344
+        var area = new google.maps.LatLng(lat,lng);
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: area,
+            zoom: 15
+            });
+        var request = {
+            location: area,
+            radius: meterConv,
+            type: ['park'],
+            keyword: selectedSport
+        };
+        console.log(request)
+        service = new google.maps.places.PlacesService(map);
+        service.nearbySearch(request, callback);
+    }
+    //Function is a callback request from Google Places JSON, and data is appended to HTML
+    function callback(results, status) {
+        console.log(results)
+        for (var i = 0; i < results.length; i++) {
+            var tableRow  = $('<tr>')
+            parkName = results[i].name
+            parkAddress = results[i].vicinity
+            console.log(parkName)    
+            console.log(results.length)
+            $('#table-data').append(tableRow)
+            $(tableRow).append('<td>' + parkName + '</td>')
+            $(tableRow).append('<td>' + parkAddress + '</td>')
+        }
+    }
 
-        //When Search button clicked, Google Maps API request and Weather based off      Zip shows results
 
 
 
 
-
-//google maps api key: AIzaSyApXuhqWNe1cN6kA4ojTP9aqVVsDcteGbU
-
-
-
-//------------------------------------------------------------------------------------------------------------------------------------------
-
-//On click, pop up modal
-
-    //Within modal, form is available to fill out
-
-    //Within form, enter zip has a 'search' button within to request
-
-        //When Search button clicked, Google Maps API request 
-        
-        //and Weather based off Zip shows results
-
-
-
-
-
-
-
-
-
-
-//Sign in to have user data and 
-
-// Search for Pick up games that have been posted around you
-
-    //Show the amount of people going, the location, type of game and a description that the poster has created
-
-    //Click that you are interested in going
-
-// Post a Pick Up Game for people to join
-
-    //Enter the category for the type of sport
-
-    //Short Description on what exactly you want to do, where in the park you might be
-
-    //Choose the park that you are going to, from a list of parks nearby
