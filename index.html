@@ -99,32 +99,44 @@
         <form>
             <div class="form-group">
                 <label for="create-name-input">Name</label>
-                <input type="text" class="form-control" id="create-name-input" placeholder="John Smith">
+                <input type="text" class="form-control" id="create-name-input" placeholder="John Smith" required>
             </div>
             <div class="form-group">
                 <label for="create-sport-input">Sport</label>
-                <input type="text" class="form-control" id="create-sport-input" placeholder="Basketball">
+                <select class="form-control" id="create-sport-input">
+                        <option>Basketball</option>
+                        <option>Soccer</option>
+                        <option>Baseball</option>
+                        <option>Football</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="create-time-input">Time</label>
-                <input type="text" class="form-control" id="create-time-input" placeholder="4:00 pm">
+                <input type="time" class="form-control" id="create-time-input" required>
             </div>
             <div class="form-group">
                 <label for="radius-input">Distance Radius (Miles)</label>
-                <input type="text" class="form-control" id="radius-input" placeholder="5">
+                <select class="form-control" id="radius-input">
+                        <option>5</option>
+                        <option>10</option>
+                        <option>15</option>
+                        <option>20</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="create-zip-input">Zip Code</label>
-                <input type="number" class="form-control" id="create-zip-input" placeholder="90210"><br>
+                <input type="number" class="form-control" id="create-zip-input" placeholder="90210" required pattern="[0-9]{5}">
+                <div id="zip-invalid">
+                    <h6>Please Enter a Valid Zip Code</h6>
+                </div>
+                <br>
                 <button type="submit" class="btn btn-primary" id="zip-code-search">Search</button>
                 <!--hide initial until search button clicked-->
                 <div class="card-body">
-                    <table id="search-table" class="table">
+                    <table id="search-table" class="table table-hover">
                         <thead>
                             <tr id="create-search-results"></tr>
-                            <th scope="col">Park Name</th>
-                            <th scope="col">Address</th>
-                            
+                            <th scope="col">Park Results</th>
                             </tr>
                         </thead>
                         <!--Park/search data will be appended to table-data id-->
@@ -141,6 +153,7 @@
         function hideForm() {
             document.getElementById('form-spot').style.display = 'none';
             document.getElementById('search-table').style.display = 'none';
+            document.getElementById('zip-invalid').style.display = 'none';
         }
 
         hideForm();

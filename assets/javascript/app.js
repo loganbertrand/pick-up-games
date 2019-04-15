@@ -46,7 +46,7 @@ $('#zip-code-search').on('click', function(){
   $('#create-search-results').html('');
   $('#table-data').html('')
 
-  document.getElementById('search-table').style.display = 'block';
+  
   //assign var to inputs from HTML
   zCode = $('#create-zip-input').val().trim()
   searchRadius = $('#radius-input').val().trim()
@@ -54,22 +54,29 @@ $('#zip-code-search').on('click', function(){
   console.log(zCode)
   console.log(searchRadius)
   console.log(selectedSport)
-  //Define object properties in Firebase and push values to each
-  //dataRef.ref().push({
-  //    zipCode: zCode,
-  //})
-  //$('#train-name').val().empty()
-  getCoords()
-//----------WEATHER API STUFF ON CLICK ---------
-  getWeather();
 
-})
+  //----ZIP CODE INPUT VALIDATION----
+  if(zCode.length !== 5 || zCode.length == 0){
+    document.getElementById('zip-invalid').style.display = 'block';
+  }else{
+    document.getElementById('zip-invalid').style.display = 'none';
+    document.getElementById('search-table').style.display = 'block';
+    //---------GOOGLE API ON CLICK----
+    getCoords()
+  //----------WEATHER API STUFF ON CLICK ---------
+    getWeather();
+  }
+});
 
 //On Click function for selecting the park you want for Game
+var location;
 
-$('').on('click', function(){
+$('td').on('click', function(){
   document.getElementById('search-table').style.display = 'none';
 
+  location = $('.park-name').textContent;
+  console.log('chosen:'+ location)
+  console.log('Working?')
 
 });
 
@@ -130,6 +137,7 @@ function clearCreateForm(){
    $('#create-zip-input').val('')
    $('#create-time-input').val('')
 }
+
 
 //---------WEATHER API APP QUERY----------------------------------------
 
@@ -229,8 +237,7 @@ function clearCreateForm(){
             console.log(parkName)    
             console.log(results.length)
             $('#table-data').append(tableRow)
-            $(tableRow).append('<td>' + parkName + '</td>')
-            $(tableRow).append('<td>' + parkAddress + '</td>')
+            $(tableRow).append('<td class="park-name">' + parkName + '<br>' + parkAddress + '</td>')
         }
     }
 
