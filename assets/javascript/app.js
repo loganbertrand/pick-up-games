@@ -16,13 +16,6 @@
 
   //Create Pick Up Game button-logan
 
-  $('#create-game').on('click', function(){
-
-    document.getElementById('form-spot').style.display = 'block';
-  
-    console.log('Create Game has been clicked')
-  
-  });
 
   //-------------GOOGLE MAPS VARIABLES-------------
   //Declare variables
@@ -67,20 +60,7 @@ $('#zip-code-search').on('click', function(){
     getWeather();
   }
 });
-
-//On Click function for selecting the park you want for Game
-    //if (tbl != null) {
-     // for (var i = 0; i < tbl.rows.length; i++) {
-      //  for (var j = 0; j < tbl.rows[i].cells.length; j++){
-      //  tbl.rows[i].cells[j].onclick = function (){
-       //    getval(this); 
-        //  };
-       // }
-     // }
-    //}
-    //function getval(cel) {
-      //console.log(cel.innerHTML);
-  //}
+//Data for location results
   $('#table-data').on( 'click', 'tr', function (cel) {
     $(this).addClass('highlight')
 
@@ -107,6 +87,7 @@ $('#create-game-submit').on('click', function(){
   var sport = $('#create-sport-input').val().trim();
   var location = $('.hidden-data').text();
   var time = $('#create-time-input').val().trim();
+  var zipCode = $('#create-zip-input').val().trim();
 
   console.log(name);
   console.log(sport);
@@ -118,6 +99,7 @@ $('#create-game-submit').on('click', function(){
     sport: sport,
     location: location,
     time: time,
+    zipCode: zipCode
   });
 
   });
@@ -145,7 +127,7 @@ database.ref().on("child_added", function(childSnapshot) {
   $(tableRow).append("<td>" + name + "</td>")
   $(tableRow).append('<td>' + time + '</td>')
 
-  document.getElementById('form-spot').style.display = 'none';
+  
   clearCreateForm()
 }, 
 // Handle the errors
@@ -159,6 +141,53 @@ function clearCreateForm(){
    $('#create-zip-input').val('')
    $('#create-time-input').val('')
 }
+
+//Result page event listner, updates seach results
+$('#submit-btn').on("click", function() {
+  event.preventDefault();
+  console.log('hello')
+  zCode = $('#zipcode-input').val()
+  searchRadius = $('#radius-input').val()
+  selectedSport = $('#sport-input').val().trim()
+  console.log(zCode)
+  console.log(searchRadius)
+  console.log(selectedSport)
+  resultDataDisplay()
+});
+function resultDataDisplay(){
+  database.ref().orderByChild("sport").equalTo(selectedSport).on('value', function(snapshot) {
+    snapshot.forEach(function(data) {
+      console.log('hello2')
+      console.log(snapshot.val())
+      //define table row variable
+      var tableRow = $('<tr>')
+
+      //Adding clickable-row class
+      tableRow.addClass('clickable-row')
+
+      //append that to the main table
+      $('#refined-table').append(tableRow)
+      
+      var name = data.val().name;
+      var sport = data.val().sport;
+      var location = data.val().location;
+      var time = data.val().time;
+
+      console.log(time)
+      console.log(sport)
+      console.log(location)
+      console.log(time)
+
+      $(tableRow).append("<td>" + sport + "</td>")
+      $(tableRow).append('<td>' + location + '</td>')
+      $(tableRow).append("<td>" + name + "</td>")
+      $(tableRow).append('<td>' + time + '</td>') 
+    
+      document.getElementById('form-spot').style.display = 'none';
+      clearCreateForm()
+    })
+  })
+};
 
 
 //---------WEATHER API APP QUERY----------------------------------------
