@@ -92,14 +92,14 @@
             <p class="lead">Bringing people together to enjoy the games they love.</p>
             <hr class="my-4">
             <p>ITHE GAME STARTS HERE</p>
-            <a class="btn btn-danger btn-lg" href="#" role="button" id="zip-code" data-toggle="modal" data-target="#exampleModalCenter1"><i class="fas fa-search"></i> Find Game</a>
+            <a class="btn btn-danger btn-lg" href="results.html" role="button" id="zip-code"><i class="fas fa-search"></i> Find Game</a>
             <!--<a class="btn btn-danger btn-lg" href="#" role="button" id="create-game"><i class="far fa-edit"></i> Create Game</a>-->
             <a class="btn btn-danger btn-lg" href="#" role="button" id="create-game" data-toggle="modal" data-target="#exampleModalCenter"><i class="far fa-edit"></i> Create Game</a>
         </div>
     </div>
 
     <!-- Modal Find Game-->
-    <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <!--<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -126,11 +126,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="zip-code-search2">Search</button>
+                    <a href="results.html"><button type="button" class="btn btn-primary" id="zip-code-search2">Search</button></a>
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <!-- Modal Create Game-->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -185,6 +185,27 @@
             </div>
         </div>
     </div>
+      
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            ...
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+        </div>
+    </div>
 
     <!--Create Game Form to be hidden initially until clicked on-->
     <!--0--><div id="form-spot">
@@ -236,14 +257,15 @@
 
         hideForm();
     </script>
-    <!--Container with cards
+
+    <!--Container with cards-->
     <div class="container">
         <div class="card">
             <div class="card-header bg-secondary text-white">Current Games</div>
             <div class="card-group">
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
+                        <h5 class="card-title" id="title1">Card title</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of
                             the card's content.</p>
@@ -253,7 +275,7 @@
                 </div>
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
+                        <h5 class="card-title" id="title2">Card title</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of
                             the card's content.</p>
@@ -263,16 +285,16 @@
                 </div>
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
+                        <h5 class="card-title" id="title3">Card title</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of
                             the card's content.</p>
-                        <a href="#" class="card-link">Card link</a>
+                           <a href="#" class="card-link">Card link</a>
                         <a href="#" class="card-link">Another link</a>
                     </div>
                 </div>
             </div>
-        </div>-->
+        </div>
 
         <!--future games section-->
         <div class="card">
@@ -281,10 +303,10 @@
                 <table class="table">
                     <thead id="current-table">
                         <tr>
-                            <th scope="col" id="sport-display">Sport</th>
-                            <th scope="col" id="location-display" >Location</th>
-                            <th scope="col" id="name-display" >Organizer</th>
-                            <th scope="col" id="time-display" >Time</th>
+                            <th scope="col" class="sport-display">Sport</th>
+                            <th scope="col" class="location-display" >Location</th>
+                            <th scope="col" class="name-display" >Organizer</th>
+                            <th scope="col" class="time-display" >Time</th>
                         </tr>
                     </thead>
                     <!--Train data will be appended to table-data id-->
