@@ -16,13 +16,6 @@
 
   //Create Pick Up Game button-logan
 
-  $('#create-game').on('click', function(){
-
-    document.getElementById('form-spot').style.display = 'block';
-  
-    console.log('test')
-  
-  });
 
   //-------------GOOGLE MAPS VARIABLES-------------
   //Declare variables
@@ -42,50 +35,76 @@
 $('#zip-code-search').on('click', function(){
  //-------------------GOOGLE MAPS-------------------
     
-        event.preventDefault()
+  event.preventDefault()
+  $('#create-search-results').html('');
+  $('#table-data').html('')
 
-        document.getElementById('search-table').style.display = 'block';
-        //assign var to inputs from HTML
-        zCode = $('#create-zip-input').val().trim()
-        searchRadius = $('#radius-input').val().trim()
-        selectedSport = $('#create-sport-input').val().trim()
-        console.log(zCode)
-        console.log(searchRadius)
-        console.log(selectedSport)
-        //Define object properties in Firebase and push values to each
-        //dataRef.ref().push({
-        //    zipCode: zCode,
-        //})
-        //$('#train-name').val().empty()
-        getCoords()
+  
+  //assign var to inputs from HTML
+  zCode = $('#create-zip-input').val().trim()
+  searchRadius = $('#radius-input').val().trim()
+  selectedSport = $('#create-sport-input').val().trim()
+  console.log(zCode)
+  console.log(searchRadius)
+  console.log(selectedSport)
 
+  //----ZIP CODE INPUT VALIDATION----
+  if(zCode.length !== 5 || zCode.length == 0){
+    document.getElementById('zip-invalid').style.display = 'block';
+  }else{
+    document.getElementById('zip-invalid').style.display = 'none';
+    document.getElementById('search-table').style.display = 'block';
+    //---------GOOGLE API ON CLICK----
+    getCoords()
+  //----------WEATHER API STUFF ON CLICK ---------
+    getWeather();
+  }
+});
+//Data for location results
+  $('#table-data').on( 'click', 'tr', function (cel) {
+    $(this).addClass('highlight')
 
+    var resultName = cel.target.childNodes[0].data;
+    var resultAddress = cel.target.childNodes[2].data;
 
-//-------------------WEATHER API STUFF ON CLICK ---------------------------------
+    console.log(resultName + ': ' + resultAddress)
 
-})
+    var resultLocation = resultName + ': ' + resultAddress
 
-//Submit button for posting the created game
+    var hiddenData = $('<div class="hidden-data">' + resultLocation  + '</div>')
+
+    $('.hidden-div').append(hiddenData)
+
+    document.getElementById('search-table').style.display = 'none';
+
+  });
+
+   //Submit button for posting the created game
 $('#create-game-submit').on('click', function(){
+  event.preventDefault()
+  
   var name = $('#create-name-input').val().trim();
   var sport = $('#create-sport-input').val().trim();
-  var zipCode = $('#create-zip-input').val().trim();
+  var location = $('.hidden-data').text();
   var time = $('#create-time-input').val().trim();
+  var zipCode = $('#create-zip-input').val().trim();
 
   console.log(name);
   console.log(sport);
-  console.log(zipCode);
   console.log(time);
 
 
   database.ref().push({
     name: name,
     sport: sport,
-    zipCode: zipCode,
+    location: location,
     time: time,
+    zipCode: zipCode
   });
 
-});
+  });
+
+
   
 //Set the database values to the webpage
 database.ref().on("child_added", function(childSnapshot) {
@@ -99,18 +118,22 @@ database.ref().on("child_added", function(childSnapshot) {
   //define variables
   var name = childSnapshot.val().name;
   var sport = childSnapshot.val().sport;
-  var zipCode = childSnapshot.val().zipCode;
+  var location = childSnapshot.val().location;
   var time = childSnapshot.val().time;
 
   
   $(tableRow).append("<td>" + sport + "</td>")
-  $(tableRow).append('<td>' + zipCode + '</td>')
+  $(tableRow).append('<td>' + location + '</td>')
   $(tableRow).append("<td>" + name + "</td>")
   $(tableRow).append('<td>' + time + '</td>')
 
-  document.getElementById('form-spot').style.display = 'none';
+  
   clearCreateForm()
-});
+}, 
+// Handle the errors
+function(errorObject) {
+      console.log("Errors handled: " + errorObject.code);
+    });
 
 function clearCreateForm(){
    $('#create-name-input').val('')
@@ -119,43 +142,99 @@ function clearCreateForm(){
    $('#create-time-input').val('')
 }
 
-database.ref().on("value", function(snapshot) {
+//Result page event listner, updates seach results
+$('#submit-btn').on("click", function() {
+  event.preventDefault();
+  console.log('hello')
+  zCode = $('#zipcode-input').val()
+  searchRadius = $('#radius-input').val()
+  selectedSport = $('#sport-input').val().trim()
+  console.log(zCode)
+  console.log(searchRadius)
+  console.log(selectedSport)
+  resultDataDisplay()
+});
+function resultDataDisplay(){
+  database.ref().orderByChild("sport").equalTo(selectedSport).on('value', function(snapshot) {
+    snapshot.forEach(function(data) {
+      console.log('hello2')
+      console.log(snapshot.val())
+      //define table row variable
+      var tableRow = $('<tr>')
 
-//Variables for displaying on a new card needed
+      //Adding clickable-row class
+      tableRow.addClass('clickable-row')
 
-}, 
-// Handle the errors
-function(errorObject) {
-      console.log("Errors handled: " + errorObject.code);
-    });
+      //append that to the main table
+      $('#refined-table').append(tableRow)
+      
+      var name = data.val().name;
+      var sport = data.val().sport;
+      var location = data.val().location;
+      var time = data.val().time;
+
+      console.log(time)
+      console.log(sport)
+      console.log(location)
+      console.log(time)
+
+      $(tableRow).append("<td>" + sport + "</td>")
+      $(tableRow).append('<td>' + location + '</td>')
+      $(tableRow).append("<td>" + name + "</td>")
+      $(tableRow).append('<td>' + time + '</td>') 
+    
+      document.getElementById('form-spot').style.display = 'none';
+      clearCreateForm()
+    })
+  })
+};
 
 
-//---------WEATHER API APP----------------------------------------
-var queryURL = "https://api.openweathermap.org/data/2.5/weather?zip=92102,us&appid=ff38d4fe0116519dd3020cd98753034a";
+//---------WEATHER API APP QUERY----------------------------------------
+
     // Here we run our AJAX call to the OpenWeatherMap API
  function getWeather(){
+
+  var zipCode = $('#create-zip-input').val().trim();
+  var queryURL = "https://api.openweathermap.org/data/2.5/weather?zip=" + zipCode + ",us&appid=ff38d4fe0116519dd3020cd98753034a";
+
     $.ajax({
       url: queryURL,
       method: "GET"
     }).then(function(response) {
       
-      
-      var tempC = response.main.temp
-      var tempF = (tempC-273) * 1.8 + 32
+      var city = response.name;
+      var weatherIcon = response.weather[0].icon;
+      var tempK = response.main.temp
+      var tempF = Math.floor((tempK-273) * 1.8 + 32) 
       
       
       console.log(response)
-      
-      console.log(response.name)
-      console.log(response.wind.speed)
-      console.log(response.wind.deg)
+      console.log(weatherIcon)
+      console.log(city)
       console.log(tempF)
-      console.log(tempC)
+      
+      // ------- POSTING WEATHER CARD ------
+
+        //http://openweathermap.org/img/w/[weatherIcon].png ----Link to image icon for weather
+
+      var newCard = $('<div class="card" style="width: 18rem;">')
+      var newCardBody = $('<div class="card-body">')  
+      var newCardTitle = $('<h5 class="card-title">'+  city + '</h5>')  
+      var newDeg =$('<h2 class="card-subtitle mb-2 text-muted">' + tempF + '</h2>') 
+      var newImg = $('<img src = "http://openweathermap.org/img/w/' + weatherIcon + '.png">')  
+
+      $('#create-search-results').append(newCard)
+      $(newCard).append(newCardBody)
+      $(newCardBody).append(newCardTitle)
+      $(newCardBody).append(newDeg)
+      $(newCardBody).append(newImg)
+
       
     });
  }
 
-//STUPID GOOGLE MAPS IS STUPID----------------------------------------------------------------------------
+//------------------STUPID GOOGLE MAPS IS STUPID----------------------------------------------------------------------------
 
 //Link for Google Places API
     
@@ -209,8 +288,7 @@ var queryURL = "https://api.openweathermap.org/data/2.5/weather?zip=92102,us&app
             console.log(parkName)    
             console.log(results.length)
             $('#table-data').append(tableRow)
-            $(tableRow).append('<td>' + parkName + '</td>')
-            $(tableRow).append('<td>' + parkAddress + '</td>')
+            $(tableRow).append('<td class="park-name">' + parkName + '<br>' + parkAddress + '</td>')
         }
     }
 
