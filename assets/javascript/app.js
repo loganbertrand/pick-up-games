@@ -69,38 +69,60 @@ $('#zip-code-search').on('click', function(){
 });
 
 //On Click function for selecting the park you want for Game
-var location;
+    //if (tbl != null) {
+     // for (var i = 0; i < tbl.rows.length; i++) {
+      //  for (var j = 0; j < tbl.rows[i].cells.length; j++){
+      //  tbl.rows[i].cells[j].onclick = function (){
+       //    getval(this); 
+        //  };
+       // }
+     // }
+    //}
+    //function getval(cel) {
+      //console.log(cel.innerHTML);
+  //}
+  $('#table-data').on( 'click', 'tr', function (cel) {
+    $(this).addClass('highlight')
 
-$('td').on('click', function(){
-  document.getElementById('search-table').style.display = 'none';
+    var resultName = cel.target.childNodes[0].data;
+    var resultAddress = cel.target.childNodes[2].data;
 
-  location = $('.park-name').textContent;
-  console.log('chosen:'+ location)
-  console.log('Working?')
+    console.log(resultName + ': ' + resultAddress)
 
-});
+    var resultLocation = resultName + ': ' + resultAddress
 
-//Submit button for posting the created game
+    var hiddenData = $('<div class="hidden-data">' + resultLocation  + '</div>')
+
+    $('.hidden-div').append(hiddenData)
+
+    document.getElementById('search-table').style.display = 'none';
+
+  });
+
+   //Submit button for posting the created game
 $('#create-game-submit').on('click', function(){
+  event.preventDefault()
+  
   var name = $('#create-name-input').val().trim();
   var sport = $('#create-sport-input').val().trim();
-  var zipCode = $('#create-zip-input').val().trim();
+  var location = $('.hidden-data').text();
   var time = $('#create-time-input').val().trim();
 
   console.log(name);
   console.log(sport);
-  console.log(zipCode);
   console.log(time);
 
 
   database.ref().push({
     name: name,
     sport: sport,
-    zipCode: zipCode,
+    location: location,
     time: time,
   });
 
-});
+  });
+
+
   
 //Set the database values to the webpage
 database.ref().on("child_added", function(childSnapshot) {
@@ -114,12 +136,12 @@ database.ref().on("child_added", function(childSnapshot) {
   //define variables
   var name = childSnapshot.val().name;
   var sport = childSnapshot.val().sport;
-  var zipCode = childSnapshot.val().zipCode;
+  var location = childSnapshot.val().location;
   var time = childSnapshot.val().time;
 
   
   $(tableRow).append("<td>" + sport + "</td>")
-  $(tableRow).append('<td>' + zipCode + '</td>')
+  $(tableRow).append('<td>' + location + '</td>')
   $(tableRow).append("<td>" + name + "</td>")
   $(tableRow).append('<td>' + time + '</td>')
 
