@@ -120,12 +120,13 @@ database.ref().on("child_added", function(childSnapshot) {
   var sport = childSnapshot.val().sport;
   var location = childSnapshot.val().location;
   var time = childSnapshot.val().time;
+  var formatTime = moment(time, 'HH:mm').format('hh:mm a')
 
   
   $(tableRow).append("<td>" + sport + "</td>")
   $(tableRow).append('<td>' + location + '</td>')
   $(tableRow).append("<td>" + name + "</td>")
-  $(tableRow).append('<td>' + time + '</td>')
+  $(tableRow).append('<td>' + formatTime + '</td>')
 
   
   clearCreateForm()
@@ -142,7 +143,7 @@ function clearCreateForm(){
    $('#create-time-input').val('')
 }
 
-//Result page event listner, updates seach results
+//RESULT PAGE event listner, updates seach results
 $('#submit-btn').on("click", function() {
   event.preventDefault();
   console.log('hello')
@@ -172,6 +173,7 @@ function resultDataDisplay(){
       var sport = data.val().sport;
       var location = data.val().location;
       var time = data.val().time;
+      var formatTime = moment(time, 'HH:mm').format('hh:mm a')
 
       console.log(time)
       console.log(sport)
@@ -181,7 +183,7 @@ function resultDataDisplay(){
       $(tableRow).append("<td>" + sport + "</td>")
       $(tableRow).append('<td>' + location + '</td>')
       $(tableRow).append("<td>" + name + "</td>")
-      $(tableRow).append('<td>' + time + '</td>') 
+      $(tableRow).append('<td>' + formatTime + '</td>') 
     
       document.getElementById('form-spot').style.display = 'none';
       clearCreateForm()
