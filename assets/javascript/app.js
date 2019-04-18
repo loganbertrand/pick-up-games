@@ -92,16 +92,13 @@ $('#create-game-submit').on('click', function(){
   console.log(name);
   console.log(sport);
   console.log(time);
-
-
-  database.ref().push({
-    name: name,
-    sport: sport,
-    location: location,
-    time: time,
-    zipCode: zipCode
-  });
-
+    database.ref().push({
+      name: name,
+      sport: sport,
+      location: location,
+      time: time,
+      zipCode: zipCode
+    });
   });
 
 
